@@ -2,6 +2,21 @@ import urllib2
 import base64
 import re
 import sys
+import nltk
+from nltk.util import ngrams
+
+def word_grams(words, min=1, max=4):
+    s = []
+    for n in range(min, max):
+        for ngram in ngrams(words, n):
+            s.append(' '.join(str(i) for i in ngram))
+    return s
+
+def get_stop_word_list(file_name):
+	content = open(file_name).read()
+	stop_word_list = content.split('\n')
+	return stop_word_list
+		
 
 def generate_query_word(res_list, number_list):
 	query_word = ''
@@ -31,7 +46,6 @@ def get_page(url):
 
 def get_res_list(content):
 	title_pattern = re.compile(r"<d:Title.+?>(.+?)</d:Title>")
-	#<d:Url m:type="Edm.String">http://money.cnn.com/2016/09/30/technology/tesla-elon-musk-discount/index.html</d:Url>
 	url_pattern = re.compile(r"<d:Url.+?>(.+?)</d:Url>")
 	desp_pattern = re.compile(r"<d:Description.+?>(.+?)</d:Description>")
 	title_list = title_pattern.findall(content)
@@ -57,6 +71,8 @@ def validate_input(content, max_num):
 if __name__ == '__main__':
 	res_list = []
 	number_list = []
+	stop_word_list_file = 'stop_words.txt'
+	stop_word_list = get_stop_word_list(stop_word_list_file)
 	while 1:
 		url = generate_url(res_list, number_list)
 		content = get_page(url)
@@ -66,7 +82,6 @@ if __name__ == '__main__':
 			print 'Title:', res_list[i][0]
 			print 'Url:', res_list[i][1]
 			print 'Description:', res_list[i][2]
-		# break
 		print 'please input the number of relavant pages, seperated by \',\''
 		legal = False
 		while not legal:
@@ -78,6 +93,5 @@ if __name__ == '__main__':
 				break
 		print number_list
 		break
-
 	sys.exit()
 
