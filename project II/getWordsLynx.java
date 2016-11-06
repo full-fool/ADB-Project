@@ -73,7 +73,6 @@ public class getWordsLynx {
             String tok = st.nextToken();
             //System.out.println(tok);
             document.add(tok);
-            res += tok + ' ';
         }
         //System.out.println(document.toString());
         int len = document.toString().length();
