@@ -102,7 +102,7 @@ def load_db_info():
 def retrieve_top_4(cached_list):
 	html_dict = {}
 	for i in cached_list:
-		url = cached_list[i].url	
+		url = cached_list[i].url
 		html_dict[url] = True
 	return html_dict
 
@@ -144,13 +144,15 @@ def classify(category, database_url, ec, es, ESpecificity):
 
 		e_coverage[each_category] = total_num
 		sum_e_coverage += total_num
-		
+
 	for each_category in sub_categories:
-	
+
 		# database_total_num = db_info[database_url] if database_url in db_info else get_db_info(database_url)
 		# print 'database total num for ' + database_url + ' is ' + str(database_total_num)
 		coverage = e_coverage[each_category]
-		specificity = float(coverage) * ESpecificity / float(sum_e_coverage)
+		specificity = 0
+		if sum_e_coverage > 0:
+			specificity = float(coverage) * ESpecificity / float(sum_e_coverage)
 		print 'Specificity for category:%s is %s' % (each_category, specificity)
 		print 'Coverage for category:%s is %s' % (each_category, coverage)
 		if coverage >= ec and specificity >= es:
@@ -180,9 +182,10 @@ def create_content_sample(html_dict):
 			handler = urllib2.urlopen(req)
 			header = handler.headers.getheader('content-type')
 			if 'text/html' in header:
+                        #if header is not None:
 				print "Processing " + key
 				output = subprocess.check_output(['java', 'getWordsLynx', key])
-				arr = output.split(' ')
+				arr = output.split(', ')
 				for w in arr:
 					if w in doc_sample:
 						doc_sample[w] += 1
@@ -192,7 +195,7 @@ def create_content_sample(html_dict):
 		except urllib2.HTTPError, e:
 			print 'Failed with error code - %s.' % e.code
 	return doc_sample
-		
+
 
 def output_sample(db_url, category, doc_sample):
 	outf = open(category + '-' + db_url + '.txt', 'w')
@@ -220,10 +223,9 @@ def main():
 	for result in classification_result:
 		print result
 	# print sample_result.keys()
-	# for k in sample_result:
-	# 	output_sample(database_url, k, create_content_sample(sample_result[k]))
+	for k in sample_result:
+	 	output_sample(database_url, k, create_content_sample(sample_result[k]))
 
 
 if __name__ == '__main__':
 	main()
-
