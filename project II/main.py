@@ -14,11 +14,24 @@ query_dict = {}
 category_dict = {'Root':['Computers', 'Health', 'Sports'], 'Computers':['Hardware', 'Programming'], \
 	'Health':['Fitness', 'Diseases'], 'Sports':['Basketball', 'Soccer']}
 
+# Stores the parent of each category
+parent_dict = {'Root':'Root', 'Computers':'Root', 'Health':'Root', 'Sports':'Root', 'Hardware':'Computers',\
+	'Programming':'Computers', 'Fitness':'Health', 'Diseases':'Health', 'Basketball':'Sports', 'Soccer':'Sports'}
+
 # stores the mapping between query and [category, result_dict]
 query_result = {}
 
 # stores the mapping between db url and number of total documents
 db_info = {}
+
+# Build complete path from sub-category.
+def build_path(sub_category):
+	res_string = sub_category
+	crr_category = sub_category
+	while crr_category != 'Root' and crr_category in parent_dict:
+		res_string = parent_dict[crr_category] + '/' + res_string
+		crr_category = parent_dict[crr_category]
+	return res_string
 
 def generate_query(query_word, site):
 	valid_query = urllib.quote(query_word)
@@ -111,7 +124,7 @@ def classify(category, database_url, ec, es, ESpecificity):
 			web = {}
 			if query_part in query_result:
 				query_part_dict = json.loads(query_result[query_part][1])
-				print int(query_part_dict["d"]["results"][0]["WebTotal"])
+				# print int(query_part_dict["d"]["results"][0]["WebTotal"])
 				total_num += int(query_part_dict["d"]["results"][0]["WebTotal"])
 				res_list = query_part_dict["d"]["results"][0]["Web"]
 			else:
@@ -121,7 +134,7 @@ def classify(category, database_url, ec, es, ESpecificity):
 				res_num = int(returned_dict["d"]["results"][0]["WebTotal"])
 				query_result[query_part] = [each_category, page_content]
 				save_to_cache(query_part, page_content, each_category)
-				print res_num
+				# print res_num
 				total_num += res_num
 				res_list = returned_dict["d"]["results"][0]["Web"]
 
@@ -202,10 +215,13 @@ def main():
 	print 'Classifying...'
 	classification_result, sample_result = classify('Root', database_url, ec, es, 1.0)
 	print 'Classification:'
-	print classification_result
-	print sample_result.keys()
-	for k in sample_result:
-		output_sample(database_url, k, create_content_sample(sample_result[k]))
+	classification_result = map(build_path, classification_result)
+	# print classification_result
+	for result in classification_result:
+		print result
+	# print sample_result.keys()
+	# for k in sample_result:
+	# 	output_sample(database_url, k, create_content_sample(sample_result[k]))
 
 
 if __name__ == '__main__':
