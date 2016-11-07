@@ -1,54 +1,26 @@
 A README file including the following information:
 Your group name on CourseWorks ("Project 1 Group n"), 
 your name and Columbia UNI, and your partner's name and Columbia UNI
-Project 1, Group 46
+Project 2, Group 46
 Zhengjie Miao, zm2248
 Yiqing Cui, yc3121
 
 Submitting Files:
-	source.tar.gz, which contains two files, main.py and stop_words.txt
+	source.tar.gz, which contains 7 files, main.py and stop_words.txt
 	README
 	transcript
 
 
 How to run:
-	python main.py <target-precision> <query-words>
-	note that query-words should be contained in single quotes, if there are more than one words; also stop_words.txt should be in the same directory
+	python main.py <t_es> <t_ec> <host>
 
 
 Project Design:
-	After read the initial query, the program starts to iterate. In each iteration, it loads the query result from Bing API, then get the relevance feedback from the user. After that it computes the relevance score(modifified tf-idf) for each 1-gram and 2-gram in the text of title and summary of the result pages. Through this score, it finds the most relevant words and generate new query, and repeat this process.
-
-
-Query-modification Method
-	The iead is to make the words that occurs frequently in the relevant documents get a high score, while make the words that occurs frequently in the irrelevant documents get a low score. So we considered modifying the tf-idf method: tf should be the term frequency in the relevant documents; idf should be the inverse document frequency in the irrelevant documents.
-
-		modified tfidf(t) = sum_{d in all relevant documents}tf(t,d) * idf(t, all irrelevant documents)
-
-	For terms that didn't occur in any irrelevant documents, the idf should be infinity, and we used a finite large value, 1e8, for practical computation.
-
-	After applying these computation, we can get the 1-grams with the highest score as well as the 2-grams. Some constraits should be satisfied: none of the 1-grams can be in the previous query, and at most one token of the 2-gram can occur in the previous query.
-	
-	First we compare the highest 1-gram and the highest 2-gram, if we decide to add 1-grams, then we just add them to the query; if we decide to add 2-gram, we only add the token that has not been in the query.
-
-	Then we reorder the query by a greedy algorithm:
-		0. empty the query string, and build a candidates set with the result from previous step
-		1. find a pair of 2-gram in the picked words, if there is no 2-gram with score greater than a threshold, then go to step 4;
-		2. if there is a 2-gram, we add it to the query string, and remove the two words from the candidates set
-		3. go to step 1
-		4. if the candidates set is empty, then stop; otherwise simply add the rest words to the end of the query string
-
-	Now we get the modified-query.
+	For part I, the implementation follows the guide of algorithm described in the ACM TOIS 2003 "QProber: A System for Automatic Classification of Hidden-Web Databases" paper. The core part of this algorithm is the recursive function called 
+	classify. It takes a root category, a database url, a threashold coverage, a threashold specificity and a parent node 
+	specificity as input and outputs the target classification result. Note that the coverage and specificity is just a kind of approximation, which utilizes the method described in the paper, too. 
 
 
 Bing Search Account Key
 	nelZyDIjJV7cXKNFXeU7iUWgoLSwiUjTS4+H8aWrcgA
-
-
-Additional information
-	The crucial idea for this project is to find words that can provide the most information gain for the previous query, but simply counting the frequency won't do a great job.
-
-	We thought that the part-of-speech of the word may help, and we tested this by only considering noun-1-gram, or 2-gram that contains at least a noun. Actually, it works for some queries tested by ourselves, in which result the frequency of the words in the summary and title of relevant documents are the same. In this case, we have to refer to their semantics to tell the difference between these words. However, the clic machines don't support the tagger in nltk library, so we dropped this idea.
-
-	Besides the part-of-speech method, we also tried to refer to the WordNet hyponym hierachy: multiply the maximum min_depth of all the noun synsets of the word. That is, the deeper the noun in this hierachy, the more concrete it can be. But this method is not stable, and again it is not supported by the clic machine, so we dropped it.
 
