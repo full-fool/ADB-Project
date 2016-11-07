@@ -6,13 +6,13 @@ import java.util.TreeSet;
 
 public class getWordsLynx {
 
-    public static Set runLynx(String url) {
+    public static String runLynx(String url) {
 
         int buffersize = 40000;
         StringBuffer buffer = new StringBuffer(buffersize);
 
         try {
-        	
+
             String cmdline[] = {"/usr/bin/lynx", "--dump", url };
             Process p = Runtime.getRuntime().exec(cmdline);
             BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -69,16 +69,17 @@ public class getWordsLynx {
         }
         Set document = new TreeSet();
         StringTokenizer st = new StringTokenizer(output.toString());
-
         while (st.hasMoreTokens()) {
             String tok = st.nextToken();
             //System.out.println(tok);
             document.add(tok);
         }
-        return document;
+        //System.out.println(document.toString());
+        int len = document.toString().length();
+        return document.toString().substring(1, len - 1);
     }
 
     public static void main(String args[]) {
-        runLynx(args[0]);
+        System.out.println(runLynx(args[0]));
     }
 }

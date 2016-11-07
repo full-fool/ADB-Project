@@ -102,7 +102,7 @@ def load_db_info():
 def retrieve_top_4(cached_list):
 	html_dict = {}
 	for i in cached_list:
-		url = cached_list[i].url	
+		url = cached_list[i].url
 		html_dict[url] = True
 	return html_dict
 
@@ -110,6 +110,7 @@ def retrieve_top_4(cached_list):
 def classify(category, database_url, ec, es, ESpecificity):
 	result_categories = []
 	result_samples = {}
+	# if reached the leaf node
 	if not category in category_dict:
 		return [category], {}
 	sub_categories = category_dict[category]
@@ -117,11 +118,13 @@ def classify(category, database_url, ec, es, ESpecificity):
 	sum_e_coverage = 0
 	top_4_url_list = {}
 
+	# compute the ECoverage of child nodes
 	for each_category in sub_categories:
 		total_num = 0
 		for query in query_dict[each_category]:
 			query_part = generate_query(query, database_url)
 			web = {}
+			# if already cached the exactly same query
 			if query_part in query_result:
 				query_part_dict = json.loads(query_result[query_part][1])
 				# print int(query_part_dict["d"]["results"][0]["WebTotal"])
@@ -138,21 +141,25 @@ def classify(category, database_url, ec, es, ESpecificity):
 				total_num += res_num
 				res_list = returned_dict["d"]["results"][0]["Web"]
 
+			# record the top 4 results of each query
 			if len(res_list) > 0:
 				for i in range(min(4, len(res_list))):
 					top_4_url_list[res_list[i]["Url"]] = True
 
 		e_coverage[each_category] = total_num
 		sum_e_coverage += total_num
-		
+
+	# compute the ESpecificity of child nodes
 	for each_category in sub_categories:
-	
 		# database_total_num = db_info[database_url] if database_url in db_info else get_db_info(database_url)
 		# print 'database total num for ' + database_url + ' is ' + str(database_total_num)
 		coverage = e_coverage[each_category]
-		specificity = float(coverage) * ESpecificity / float(sum_e_coverage)
+		specificity = 0
+		if sum_e_coverage > 0:
+			specificity = float(coverage) * ESpecificity / float(sum_e_coverage)
 		print 'Specificity for category:%s is %s' % (each_category, specificity)
 		print 'Coverage for category:%s is %s' % (each_category, coverage)
+		# if satisifies the condition
 		if coverage >= ec and specificity >= es:
 			child_categories, child_top_4_url_list = classify(each_category, database_url, ec, es, specificity)
 			result_categories += child_categories
@@ -179,21 +186,24 @@ def create_content_sample(html_dict):
 			req = urllib2.Request(key)
 			handler = urllib2.urlopen(req)
 			header = handler.headers.getheader('content-type')
+			# if is html file
 			if 'text/html' in header:
 				print "Processing " + key
+				# get summary by calling the java script
 				output = subprocess.check_output(['java', 'getWordsLynx', key])
-				arr = output.split(' ')
+				arr = output.split(', ')
 				for w in arr:
 					if w in doc_sample:
 						doc_sample[w] += 1
 					else:
 						doc_sample[w] = 1
-				#time.sleep(1)
+				time.sleep(1)
 		except urllib2.HTTPError, e:
 			print 'Failed with error code - %s.' % e.code
+		print ""
 	return doc_sample
-		
 
+# print the content summary
 def output_sample(db_url, category, doc_sample):
 	outf = open(category + '-' + db_url + '.txt', 'w')
 	key_arr = sorted(doc_sample.keys())
@@ -220,10 +230,9 @@ def main():
 	for result in classification_result:
 		print result
 	# print sample_result.keys()
-	# for k in sample_result:
-	# 	output_sample(database_url, k, create_content_sample(sample_result[k]))
+	for k in sample_result:
+	 	output_sample(database_url, k, create_content_sample(sample_result[k]))
 
 
 if __name__ == '__main__':
 	main()
-
