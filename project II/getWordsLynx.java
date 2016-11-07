@@ -68,7 +68,7 @@ public class getWordsLynx {
             }
         }
         Set document = new TreeSet();
-        StringTokenizer st = new StringTokenizer(output.toString());
+        StringTokenizer st = new StringTokenizer(output.toString().replace("\n", "").replace("\r", ""));
         while (st.hasMoreTokens()) {
             String tok = st.nextToken();
             //System.out.println(tok);

@@ -1,25 +1,24 @@
-A README file including the following information:
-Your group name on CourseWorks ("Project 1 Group n"), 
-your name and Columbia UNI, and your partner's name and Columbia UNI
-Project 2, Group 46
+Project 2, Group 45
 Zhengjie Miao, zm2248
 Yiqing Cui, yc3121
 
 Submitting Files:
-	source.tar.gz, which contains 7 files, main.py and stop_words.txt
+	group45-proj2.tar.gz, which contains 6 files: main.py, cache, db_info, getWordsLynx.java, getWordsLynx.class, queries.txt
 	README
-	transcript
-
 
 How to run:
+	unzip the file, and make sure that the 6 files are under the same directory. Run the python program by:
 	python main.py <t_es> <t_ec> <host>
+
+	It's fine if there is no cache file or the cache file is empty.
 
 
 Project Design:
-	For part I, the implementation follows the guide of algorithm described in the ACM TOIS 2003 "QProber: A System for Automatic Classification of Hidden-Web Databases" paper. The core part of this algorithm is the recursive function called 
-	classify. It takes a root category, a database url, a threashold coverage, a threashold specificity and a parent node 
-	specificity as input and outputs the target classification result. Note that the coverage and specificity is just a kind of approximation, which utilizes the method described in the paper, too. 
+	For part I, the implementation follows the guide of algorithm described in the ACM TOIS 2003 "QProber: A System for Automatic Classification of Hidden-Web Databases" paper. The core part of this algorithm is the recursive function called classify. It takes a root category, a database url, a threshold coverage, a threashold specificity and a parent node specificity as input and outputs the target classification result. Note that the coverage and specificity is just a kind of approximation, which utilizes the method described in the paper, too. 
 
+	For part 2, we recorded the url of top-4 documents for each query in the recursive classification process in part 1, separated by node. After classification process ends, we start to summary the content of these documents, by calling the Java script from the project page. We modified the script a bit to support calling from python. Note that our program will wait for 1 second after loading one document.
+
+	We decide not to include multiple-word information in the content summaries.
 
 Bing Search Account Key
 	nelZyDIjJV7cXKNFXeU7iUWgoLSwiUjTS4+H8aWrcgA

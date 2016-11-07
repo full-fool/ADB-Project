@@ -39,7 +39,7 @@ def generate_query(query_word, site):
 	return query_part
 
 def generate_url(query_part):
-	url = 'https://api.datamarket.azure.com/Data.ashx/Bing/SearchWeb/v1/Composite?Query=%s&$top=4&$format=JSON' % query_part
+	url = 'https://api.datamarket.azure.com/Data.ashx/Bing/SearchWeb/v1/Composite?Query=%s&$top=10&$format=JSON' % query_part
 	return url
 
 # get response of Bing API
@@ -65,11 +65,12 @@ def get_queries():
 			query_dict[category].append(query)
 
 def load_cache():
-	for line in open('cache'):
-		original_dict = json.loads(line)
-		key = original_dict.keys()[0]
-		value = original_dict[key]
-		query_result[key] = value
+	with open('cache', 'a+') as cf:
+		for line in cf:
+			original_dict = json.loads(line)
+			key = original_dict.keys()[0]
+			value = original_dict[key]
+			query_result[key] = value
 
 def save_to_cache(query, content, category):
 	res_dict = {}
@@ -88,13 +89,13 @@ def get_db_info(db_url):
 	returned_dict = json.loads(page_content)
 	database_total_num = returned_dict["d"]["results"][0]["WebTotal"]
 	db_info[db_url] = database_total_num
-	file_handler = open('db_info', 'a')
+	file_handler = open('db_info', 'a+')
 	file_handler.write('%s###%s\n' % (db_url, database_total_num))
 	file_handler.close()
 	return database_total_num
 
 def load_db_info():
-	for line in open('db_info'):
+	for line in open('db_info', 'a+'):
 		[key, value] = line.split('###')
 		db_info[key] = int(value)
 
@@ -163,6 +164,7 @@ def classify(category, database_url, ec, es, ESpecificity):
 		if coverage >= ec and specificity >= es:
 			child_categories, child_top_4_url_list = classify(each_category, database_url, ec, es, specificity)
 			result_categories += child_categories
+			# merge the list of documents
 			for k in child_top_4_url_list.keys():
 				result_samples[k] = child_top_4_url_list[k]
 			if each_category in child_top_4_url_list:
@@ -193,10 +195,11 @@ def create_content_sample(html_dict):
 				output = subprocess.check_output(['java', 'getWordsLynx', key])
 				arr = output.split(', ')
 				for w in arr:
-					if w in doc_sample:
-						doc_sample[w] += 1
+					ww = w.strip()
+					if ww in doc_sample:
+						doc_sample[ww] += 1
 					else:
-						doc_sample[w] = 1
+						doc_sample[ww] = 1
 				time.sleep(1)
 		except urllib2.HTTPError, e:
 			print 'Failed with error code - %s.' % e.code
