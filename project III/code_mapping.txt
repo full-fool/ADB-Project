@@ -1,0 +1,56 @@
+10H,Proper sanitization not provided for utensil ware washing operation.
+02I,Food prepared from ingredients at ambient temperature not cooled to 41Âº F or below within 4 hours.
+10G,Food service operation occurring in room used as living or sleeping quarters.
+03F,Unpasteurized milk or milk product present.
+03E,Potable water supply inadequate. Water or ice not potable or from unapproved source.  Cross connection in potable water supply system observed.
+10J,''''Wash hands sign not posted at hand wash facility.
+20A,Food allergy information poster not conspicuously posted where food is being prepared or processed by food workers.
+04M,Live roaches present in facility's food and/or non-food areas.
+04L,Evidence of mice or live mice present in facility's food and/or non-food areas.
+04K,Evidence of rats or live rats present in facility's food and/or non-food areas.
+02C,Hot food item that has been cooked and refrigerated is being held for service without first being reheated to 1 65Âº F or above within 2 hours.
+02B,Hot food item not held at or above 140Âº F.
+10B,Plumbing not properly installed or maintained; anti-siphonage or backflow prevention device not provided where required; equipment or floor not properly drained; sewage disposal system in disrepair or not functioning properly.
+22E,ROP processing equipment not approved by DOHMH.
+04C,Food worker does not use proper utensil to eliminate bare hand contact with food that will not receive adequate additional heat treatment.
+22B,Toilet facility used by women does not have at least one covered garbage receptacle.
+04A,Food Protection Certificate not held by supervisor of food operations.
+10E,Accurate thermometer not provided in refrigerated or hot holding equipment.
+06A,Personal cleanliness inadequate. Outer garment soiled with possible contaminant.  Effective hair restraint not worn in an area where food is prepared.
+03G,Raw food not properly washed prior to serving.
+20E,Letter Grade or Grade Pending card not conspicuously posted and visible to passersby.
+06G,HACCP plan not approved or approved HACCP plan not maintained on premises.
+20F,Current letter grade card not posted.
+08C,Pesticide use not in accordance with label or applicable laws. Prohibited chemical used/stored. Open bait station used.
+06H,Records and logs not maintained to demonstrate that HACCP plan has been properly implemented.
+08A,Facility not vermin proof. Harborage or conditions conducive to attracting vermin to the premises and/or allowing vermin to exist.
+99B,Other general violation.
+04O,Live animals other than fish in tank or service animal present in facility's food and/or non-food areas.
+18F,Permit not conspicuously displayed.
+18G,Manufacture of frozen dessert not authorized on Food Service Establishment permit.
+06F,Wiping cloths soiled or not stored in sanitizing solution.
+02G,Cold food item held above 41Âº F (smoked fish and reduced oxygen packaged foods above 38 ÂºF) except during necessary preparation.
+06I,Food not labeled in accordance with HACCP plan.
+15H,Sign prohibiting sale of tobacco products to minors not conspicuously posted.
+02A,Food not cooked to required minimum temperature.
+15K,Operator failed to make good faith effort to inform smokers of the Smoke-free Act prohibition of smoking.
+05I,Refrigeration used to implement HACCP plan not equipped with an electronic system that continuously monitors time and temperature.
+15S,Flavored tobacco products sold or offered for sale.
+15J,Ashtray present in smoke-free area.
+20B,Food allergy information poster not posted in language understood by all food workers.
+15T,Original label for tobacco products sold or offered for sale.
+05D,Hand washing facility not provided in or near food preparation area and toilet room. Hot and cold running water at adequate pressure to enable cleanliness of employees not provided at facility. Soap and an acceptable hand-drying device not provided.
+05E,Toilet facility not provided for employees or for patrons when required.
+05F,Insufficient or no refrigerated or hot holding equipment to keep potentially hazardous foods at required temperatures.
+03A,Food from unapproved or unknown source or home canned. Reduced oxygen packaged (ROP) fish not frozen before processing; or ROP foods prepared on premises transported to another site.
+02J,Reduced oxygen packaged (ROP) foods not cooled by an approved method whereby the internal food temperature is reduced to 38Âº F within two hours of cooking and if necessary further cooled to a temperature of 34Âº F within six hours of reaching 38Âº F.
+05A,Sewage disposal system improper or unapproved.
+04I,Unprotected food re-served.
+05C,Food contact surface improperly constructed or located. Unacceptable material used.
+04G,Unprotected potentially hazardous food re-served.
+15E,Out-of package sale of tobacco products observed.
+07A,Duties of an officer of the Department interfered with or obstructed.
+15I,''''No Smoking and/or 'Smoking Permitted sign not conspicuously posted. Health warning not present on 'Smoking Permitted
+09A,Canned food product observed dented and not segregated from other consumable food items.
+09B,Thawing procedures improper.
+09C,Food contact surface not properly maintained.
