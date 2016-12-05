@@ -27,8 +27,15 @@ How to run:
 
 
 Project Design:
+	The implementation of the algorithm is an original a-priori algorithm.
 	
-
+	The algorithm is divided into 2 parts basically. The first part is about the large itemsets and the second part is about the association rules.
+	
+	(a) The large itemsets algorithm is the same as the algorithm in Section 2.1 of the Agrawal and Srikant paper in VLDB 1994. We start from 1-itemset, then we generate L_k+1 itemset from L_k itemset. After we get L_k+1 itemset, we compare each transaction of the database with the L_k+1 itemset to get the occurrence of each item in L_k+1 itemset and remove items with too low occurrence. Finally we gather these large itemset together and output the final result.
+	(b) The association rule algorithm is straighforward. For every large itemset, for each item in that itemset, we check whether it exists an association rule from the left part to current item. Finally we get the association rules with high conf.
+	
+	Both of the implementation is in run.py, which mainly contains a class called Solution. The class defines lots of methods including initialization, load data and some other helper function like subset and apriori_gen for the main process method. 
+	
 
 The Command Line Specification
 	python run.py INTEGRATED-DATASET.csv 0.3 0.5
