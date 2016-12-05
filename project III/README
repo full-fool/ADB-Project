@@ -21,8 +21,8 @@ Describe the Data Set:
 
 
 How to run:
-	Unzip file group45-proj3.tar.gz. Run the python program by:
-	python run.py INTEGRATED-DATASET.csv <min_sup> <min_conf>
+	Unzip file group45-proj3.tar.gz. Enter the directory /group45-proj3. Run the python program by:
+	python run.py ../INTEGRATED-DATASET.csv <min_sup> <min_conf>
 
 
 Project Design:
